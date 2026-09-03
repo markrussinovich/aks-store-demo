@@ -14,7 +14,7 @@ on:
       environment:
         description: 'GitHub Environment name'
         required: true
-        default: 'radius-azure'
+        default: 'radius-aks'
       application:
         description: 'Name of the application to delete'
         required: true
@@ -37,7 +37,7 @@ jobs:
   detect:
     name: Detect provider
     runs-on: ubuntu-24.04
-    environment: ${{ inputs.environment || 'radius-azure' }}
+    environment: ${{ inputs.environment || 'radius-aks' }}
     outputs:
       provider: ${{ steps.detect.outputs.provider }}
     steps:
@@ -60,7 +60,7 @@ jobs:
     if: ${{ needs.detect.outputs.provider == 'azure' }}
     uses: ./.github/workflows/delete-azure.yml
     with:
-      environment: ${{ inputs.environment || 'radius-azure' }}
+      environment: ${{ inputs.environment || 'radius-aks' }}
       resource_type: application
       name: ${{ inputs.application }}
       # A workflow_dispatch boolean input arrives as the string "true"/"false",
