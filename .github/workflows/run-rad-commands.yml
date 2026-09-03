@@ -16,7 +16,7 @@ on:
       environment:
         description: 'GitHub Environment name'
         required: true
-        default: 'radius-azure'
+        default: 'radius-aks'
       image:
         description: 'Container image passed only when the application template declares the image parameter'
         required: false
@@ -47,7 +47,7 @@ jobs:
   detect:
     name: Detect provider
     runs-on: ubuntu-24.04
-    environment: ${{ inputs.environment || 'radius-azure' }}
+    environment: ${{ inputs.environment || 'radius-aks' }}
     # On workflow_dispatch run unconditionally; on workflow_run only when the
     # upstream Verify Credentials run succeeded.
     if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
@@ -73,7 +73,7 @@ jobs:
     if: ${{ needs.detect.outputs.provider == 'azure' }}
     uses: ./.github/workflows/run-rad-commands-azure.yml
     with:
-      environment: ${{ inputs.environment || 'radius-azure' }}
+      environment: ${{ inputs.environment || 'radius-aks' }}
       image: ${{ inputs.image }}
       rad_commands: ${{ inputs.rad_commands }}
     secrets: inherit
